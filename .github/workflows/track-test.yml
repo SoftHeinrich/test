@@ -9,18 +9,28 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Test San See direct tracking URL
+      - name: Fetch and inspect San See tracking page
         shell: bash
         run: |
-          set +e
+          set -e
           URL='http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511'
-          echo "Testing: $URL"
-          curl -v --connect-timeout 15 --max-time 30 "$URL" -D headers.txt -o response.html
-          rc=$?
-          echo "curl_exit=$rc"
-          echo '--- headers ---'
-          cat headers.txt 2>/dev/null || true
-          echo '--- body preview ---'
-          head -c 3000 response.html 2>/dev/null || true
-          echo
-          exit $rc
+          curl -sS --connect-timeout 15 --max-time 30 "$URL" -o response.html
+          echo '--- matches ---'
+          grep -nE '1Z2EB7356826735511|5512723456|白俄罗斯|俄罗斯|哈萨克斯坦|运输中|2026-09-18|2026-09-14|2026-09-09' response.html || true
+          echo '--- text extract ---'
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re, html
+          data = Path('response.html').read_text(errors='ignore')
+          data = re.sub(r'<script[\s\S]*?</script>', ' ', data, flags=re.I)
+          data = re.sub(r'<style[\s\S]*?</style>', ' ', data, flags=re.I)
+          text = html.unescape(re.sub(r'<[^>]+>', '\n', data))
+          text = '\n'.join(line.strip() for line in text.splitlines() if line.strip())
+          keys = ('1Z2EB7356826735511','5512723456','白俄罗斯','俄罗斯','哈萨克斯坦','运输中','2026-09-18','2026-09-14','2026-09-09')
+          lines = text.splitlines()
+          for i,line in enumerate(lines):
+              if any(k in line for k in keys):
+                  print('\n'.join(lines[max(0,i-3):min(len(lines),i+5)]))
+                  print('---')
+          PY
