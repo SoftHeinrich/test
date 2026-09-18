@@ -1,0 +1,28 @@
+name: SanSee connectivity test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/track-test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Test San See direct tracking URL
+        shell: bash
+        run: |
+          set +e
+          URL='http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511'
+          echo "Testing: $URL"
+          curl -v --connect-timeout 15 --max-time 30 "$URL" -D headers.txt -o response.html
+          rc=$?
+          echo "curl_exit=$rc"
+          echo '--- headers ---'
+          cat headers.txt 2>/dev/null || true
+          echo '--- body preview ---'
+          head -c 3000 response.html 2>/dev/null || true
+          echo
+          exit $rc
