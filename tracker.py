@@ -126,7 +126,6 @@ def parse(html: str) -> dict:
             "status": status,
         })
 
-    # Keep first occurrence of each exact event in page order.
     unique = []
     seen = set()
     for event in events:
@@ -143,7 +142,7 @@ def parse(html: str) -> dict:
     if not events:
         raise RuntimeError("Could not parse any tracking events from San See HTML")
 
-    result = {
+    return {
         "tracking_number": TRACKING_NUMBER,
         "reference_number": summary["reference_number"],
         "destination": summary["destination"],
@@ -156,12 +155,22 @@ def parse(html: str) -> dict:
         "source_url": SOURCE_URL,
         "fetched_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
-    return result
 
 
 def main():
+    previous = None
+    if OUTPUT.exists():
+        try:
+            previous = json.loads(OUTPUT.read_text(encoding="utf-8"))
+        except Exception:
+            previous = None
+
     html = fetch_html()
     result = parse(html)
+    previous_latest = previous.get("latest_event") if isinstance(previous, dict) else None
+    result["previous_latest_event"] = previous_latest
+    result["changed_since_previous_fetch"] = previous_latest != result["latest_event"] if previous_latest else None
+
     OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False, indent=2))
 
