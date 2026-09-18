@@ -1,0 +1,68 @@
+{
+  "tracking_number": "1Z2EB7356826735511",
+  "reference_number": "5512723456",
+  "destination": "DE",
+  "piece_count": 5,
+  "current_status": "转运中【运输中-白俄罗斯】In transit - Belarus",
+  "latest_time": "2026-09-18 11:30:14",
+  "latest_event": {
+    "date_time": "2026-09-18 11:30:14",
+    "location": null,
+    "status": "【运输中-白俄罗斯】In transit - Belarus"
+  },
+  "events": [
+    {
+      "date_time": "2026-09-18 11:30:14",
+      "location": null,
+      "status": "【运输中-白俄罗斯】In transit - Belarus"
+    },
+    {
+      "date_time": "2026-09-14 14:10:51",
+      "location": null,
+      "status": "【运输中-俄罗斯】In transit - Russia"
+    },
+    {
+      "date_time": "2026-09-09 14:28:17",
+      "location": null,
+      "status": "【运输中-哈萨克斯坦】In transit - Kazakhstan"
+    },
+    {
+      "date_time": "2026-09-07 11:42:38",
+      "location": null,
+      "status": "【换装离境】Package loaded and leave epxort gateway"
+    },
+    {
+      "date_time": "2026-09-04 15:40:44",
+      "location": null,
+      "status": "【出口申报完成，等待换装离境】Export customs release, await departure"
+    },
+    {
+      "date_time": "2026-09-02 11:20:32",
+      "location": null,
+      "status": "【出口报关】Export customs clearance in progress"
+    },
+    {
+      "date_time": "2026-09-01 15:14:47",
+      "location": null,
+      "status": "【抵达口岸】Package arrived at export gateway"
+    },
+    {
+      "date_time": "2026-08-26 13:00:59",
+      "location": null,
+      "status": "【国内运输】In transit - China"
+    },
+    {
+      "date_time": "2026-08-25 15:21:01",
+      "location": null,
+      "status": "【包裹发货】Package departed from warehouse"
+    },
+    {
+      "date_time": "2026-08-22 19:40:10",
+      "location": "SZ",
+      "status": "【到达收货点】Item information received."
+    }
+  ],
+  "source": "San See Express / 三色国际物流",
+  "source_url": "http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511",
+  "fetched_at_utc": "2026-09-18T16:11:59+00:00"
+}
