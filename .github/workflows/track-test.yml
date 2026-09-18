@@ -2,8 +2,6 @@ name: SanSee connectivity test
 
 on:
   push:
-    paths:
-      - '.github/workflows/track-test.yml'
   workflow_dispatch:
 
 jobs:
