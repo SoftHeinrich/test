@@ -2,7 +2,7 @@ name: SanSee shipment tracker
 
 on:
   schedule:
-    - cron: '17 */12 * * *'
+    - cron: '55 7,19 * * *'
   workflow_dispatch:
   push:
     paths:
@@ -32,6 +32,7 @@ jobs:
           print('latest_time:', d['latest_time'])
           print('current_status:', d['current_status'])
           print('latest_event:', d['latest_event'])
+          print('changed_since_previous_fetch:', d['changed_since_previous_fetch'])
           print('event_count:', len(d['events']))
           PY
 
