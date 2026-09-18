@@ -1,36 +1,49 @@
-name: SanSee connectivity test
+name: SanSee shipment tracker
 
 on:
-  push:
+  schedule:
+    - cron: '17 */12 * * *'
   workflow_dispatch:
+  push:
+    paths:
+      - 'tracker.py'
+      - '.github/workflows/track-test.yml'
+
+permissions:
+  contents: write
 
 jobs:
-  test:
+  track:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Fetch and inspect San See tracking page
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Query San See and build tracking.json
+        run: python3 tracker.py
+
+      - name: Show latest event
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open('tracking.json', encoding='utf-8'))
+          print('tracking_number:', d['tracking_number'])
+          print('latest_time:', d['latest_time'])
+          print('current_status:', d['current_status'])
+          print('latest_event:', d['latest_event'])
+          print('event_count:', len(d['events']))
+          PY
+
+      - name: Commit updated tracking data
         shell: bash
         run: |
-          set -e
-          URL='http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511'
-          curl -sS --connect-timeout 15 --max-time 30 "$URL" -o response.html
-          echo '--- matches ---'
-          grep -nE '1Z2EB7356826735511|5512723456|白俄罗斯|俄罗斯|哈萨克斯坦|运输中|2026-09-18|2026-09-14|2026-09-09' response.html || true
-          echo '--- text extract ---'
-          python - <<'PY'
-          from html.parser import HTMLParser
-          from pathlib import Path
-          import re, html
-          data = Path('response.html').read_text(errors='ignore')
-          data = re.sub(r'<script[\s\S]*?</script>', ' ', data, flags=re.I)
-          data = re.sub(r'<style[\s\S]*?</style>', ' ', data, flags=re.I)
-          text = html.unescape(re.sub(r'<[^>]+>', '\n', data))
-          text = '\n'.join(line.strip() for line in text.splitlines() if line.strip())
-          keys = ('1Z2EB7356826735511','5512723456','白俄罗斯','俄罗斯','哈萨克斯坦','运输中','2026-09-18','2026-09-14','2026-09-09')
-          lines = text.splitlines()
-          for i,line in enumerate(lines):
-              if any(k in line for k in keys):
-                  print('\n'.join(lines[max(0,i-3):min(len(lines),i+5)]))
-                  print('---')
-          PY
+          if git diff --quiet -- tracking.json && git ls-files --error-unmatch tracking.json >/dev/null 2>&1; then
+            echo 'No tracking change to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add tracking.json
+          git commit -m 'Update shipment tracking data'
+          git push
