@@ -79,11 +79,11 @@
   ],
   "source": "San See Express / 三色国际物流",
   "source_url": "http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511",
-  "fetched_at_utc": "2026-09-25T13:02:03+00:00",
+  "fetched_at_utc": "2026-09-25T22:50:50+00:00",
   "previous_latest_event": {
-    "date_time": "2026-09-22 11:49:29",
+    "date_time": "2026-09-25 09:44:23",
     "location": null,
-    "status": "【运输中-拉脱维亚】In transit - Latvia"
+    "status": "【运输中-德国】In transit - Germany"
   },
-  "changed_since_previous_fetch": true
+  "changed_since_previous_fetch": false
 }
