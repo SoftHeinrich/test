@@ -9,23 +9,27 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
-      - name: Test UPS public tracking page
+      - name: Test UPS public tracking with headless Chrome
         shell: bash
         run: |
           set +e
           URL='https://www.ups.com/track?loc=en_DE&tracknum=1Z2EB7356826735511'
-          echo "Testing $URL"
-          curl -L -sS --connect-timeout 15 --max-time 45 \
-            -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' \
-            -D ups-headers.txt "$URL" -o ups.html
+          echo '--- Chrome version ---'
+          google-chrome --version || chromium-browser --version || chromium --version || true
+          CHROME=$(command -v google-chrome || command -v chromium-browser || command -v chromium)
+          echo "chrome=$CHROME"
+          "$CHROME" --headless=new --no-sandbox --disable-gpu \
+            --disable-dev-shm-usage --window-size=1440,1200 \
+            --virtual-time-budget=20000 --dump-dom "$URL" \
+            > ups-browser.html 2>chrome.log
           rc=$?
-          echo "curl_exit=$rc"
-          echo '--- headers ---'
-          head -80 ups-headers.txt || true
-          echo '--- matches ---'
-          grep -niE '1Z2EB7356826735511|Label Created|Shipper created|UPS has not received|On the Way|In Transit|Delivered|France|Germany|tracking' ups.html | head -120 || true
-          echo '--- size ---'
-          wc -c ups.html || true
+          echo "chrome_exit=$rc"
+          echo '--- browser matches ---'
+          grep -niE 'Access Denied|1Z2EB7356826735511|Label Created|Shipper created|UPS has not received|On the Way|In Transit|Delivered|France|Germany|tracking' ups-browser.html | head -160 || true
+          echo '--- body size ---'
+          wc -c ups-browser.html || true
+          echo '--- chrome log tail ---'
+          tail -80 chrome.log || true
           exit 0
