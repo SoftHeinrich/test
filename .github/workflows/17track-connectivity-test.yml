@@ -11,23 +11,32 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
-      - name: Render 17TRACK free UPS widget result
+      - name: Inspect rendered 17TRACK UPS widget text
         shell: bash
         run: |
           set +e
           CHROME=$(command -v google-chrome || command -v chromium-browser || command -v chromium)
           URL='https://extcall.17track.net/en/track?utm_medium=Referral&utm_source=github#apitype=1&uheight=800&nums=1Z2EB7356826735511&fc=100002&sc=0&iframeId=test&rmad=false&rmh=false'
-          echo "$URL"
           timeout 45s "$CHROME" --headless=new --no-sandbox --disable-gpu \
             --disable-dev-shm-usage --window-size=1440,1400 \
-            --virtual-time-budget=20000 --dump-dom "$URL" \
+            --virtual-time-budget=25000 --dump-dom "$URL" \
             > result.html 2>chrome.log
-          rc=$?
-          echo "chrome_exit=$rc"
-          echo '--- matches ---'
-          grep -niE '1Z2EB7356826735511|UPS|Label Created|Shipper created|On the Way|In Transit|Delivered|France|Germany|Not Found|Unknown|Pending|Info Received|tracking|status|2026-' result.html | head -300 || true
+          echo '--- title/body text ---'
+          python3 - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re, html
+          s=Path('result.html').read_text(errors='ignore')
+          print('TITLE:', re.findall(r'<title[^>]*>(.*?)</title>', s, re.I|re.S)[:3])
+          s=re.sub(r'<script[\s\S]*?</script>', ' ', s, flags=re.I)
+          s=re.sub(r'<style[\s\S]*?</style>', ' ', s, flags=re.I)
+          text=html.unescape(re.sub(r'<[^>]+>', '\n', s))
+          lines=[re.sub(r'\s+',' ',x).strip() for x in text.splitlines()]
+          lines=[x for x in lines if x]
+          for x in lines[:500]: print(x)
+          PY
+          echo '--- network/error hints ---'
+          grep -niE 'error|captcha|blocked|limit|request|api|track|parcel|shipment' result.html | head -120 || true
           echo '--- size ---'
           wc -c result.html || true
-          echo '--- log tail ---'
-          tail -60 chrome.log || true
           exit 0
