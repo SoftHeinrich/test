@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 3
     steps:
       - name: Test UPS public tracking with headless Chrome
         shell: bash
@@ -20,9 +20,9 @@ jobs:
           google-chrome --version || chromium-browser --version || chromium --version || true
           CHROME=$(command -v google-chrome || command -v chromium-browser || command -v chromium)
           echo "chrome=$CHROME"
-          "$CHROME" --headless=new --no-sandbox --disable-gpu \
+          timeout 45s "$CHROME" --headless=new --no-sandbox --disable-gpu \
             --disable-dev-shm-usage --window-size=1440,1200 \
-            --virtual-time-budget=20000 --dump-dom "$URL" \
+            --virtual-time-budget=15000 --dump-dom "$URL" \
             > ups-browser.html 2>chrome.log
           rc=$?
           echo "chrome_exit=$rc"
