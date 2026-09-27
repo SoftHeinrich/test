@@ -20,9 +20,8 @@ jobs:
             'https://www.17track.net/externalcall.js' -o externalcall.js
           echo '--- js size ---'
           wc -c externalcall.js || true
-          echo '--- interesting strings ---'
-          grep -Eo 'https?://[^"'"' ]+|/[A-Za-z0-9_?&=./:-]{8,}' externalcall.js | \
-            grep -Ei 'track|iframe|external|carrier|fc|num|17track' | head -300 || true
           echo '--- contexts ---'
-          grep -niE 'trackSingle|YQ_Fc|iframe|src=|YQ_Num|100002|carrier' externalcall.js | head -300 || true
+          grep -niE 'trackSingle|YQ_Fc|iframe|YQ_Num|carrier|externalcall|17track' externalcall.js | head -400 || true
+          echo '--- urls/domains ---'
+          strings externalcall.js | grep -Ei '17track|iframe|track|external' | head -400 || true
           exit 0
