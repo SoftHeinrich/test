@@ -1,0 +1,28 @@
+name: 17TRACK UPS connectivity test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/17track-connectivity-test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Test 17TRACK tracking page for UPS number
+        shell: bash
+        run: |
+          set +e
+          URL='https://www.17track.net/en?nums=1Z2EB7356826735511'
+          curl -L -sS --connect-timeout 15 --max-time 45 \
+            -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' \
+            -D headers.txt "$URL" -o body.html
+          echo '--- headers ---'
+          head -80 headers.txt || true
+          echo '--- matches ---'
+          grep -niE '1Z2EB7356826735511|UPS|Label Created|Shipper created|On the Way|In Transit|Delivered|France|Germany|tracking|carrier|status' body.html | head -240 || true
+          echo '--- size ---'
+          wc -c body.html || true
+          exit 0
