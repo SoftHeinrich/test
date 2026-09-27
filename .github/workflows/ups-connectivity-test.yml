@@ -1,0 +1,31 @@
+name: UPS connectivity test
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ups-connectivity-test.yml'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Test UPS public tracking page
+        shell: bash
+        run: |
+          set +e
+          URL='https://www.ups.com/track?loc=en_DE&tracknum=1Z2EB7356826735511'
+          echo "Testing $URL"
+          curl -L -sS --connect-timeout 15 --max-time 45 \
+            -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140 Safari/537.36' \
+            -D ups-headers.txt "$URL" -o ups.html
+          rc=$?
+          echo "curl_exit=$rc"
+          echo '--- headers ---'
+          head -80 ups-headers.txt || true
+          echo '--- matches ---'
+          grep -niE '1Z2EB7356826735511|Label Created|Shipper created|UPS has not received|On the Way|In Transit|Delivered|France|Germany|tracking' ups.html | head -120 || true
+          echo '--- size ---'
+          wc -c ups.html || true
+          exit 0
