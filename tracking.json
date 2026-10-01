@@ -3,14 +3,19 @@
   "reference_number": "5512723456",
   "destination": "DE",
   "piece_count": 5,
-  "current_status": "转运中【抵达清关地】Package arrived at Import gateway",
-  "latest_time": "2026-09-28 11:13:13",
+  "current_status": "转运中We have your Package, Arrived at Facility/Frankfurt, Germany",
+  "latest_time": "2026-10-01 18:40:00",
   "latest_event": {
-    "date_time": "2026-09-28 11:13:13",
-    "location": null,
-    "status": "【抵达清关地】Package arrived at Import gateway"
+    "date_time": "2026-10-01 18:40:00",
+    "location": "Frankfurt, Germany",
+    "status": "We have your Package, Arrived at Facility"
   },
   "events": [
+    {
+      "date_time": "2026-10-01 18:40:00",
+      "location": "Frankfurt, Germany",
+      "status": "We have your Package, Arrived at Facility"
+    },
     {
       "date_time": "2026-09-28 11:13:13",
       "location": null,
@@ -84,11 +89,11 @@
   ],
   "source": "San See Express / 三色国际物流",
   "source_url": "http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511",
-  "fetched_at_utc": "2026-10-01T14:50:15+00:00",
+  "fetched_at_utc": "2026-10-01T23:29:28+00:00",
   "previous_latest_event": {
     "date_time": "2026-09-28 11:13:13",
     "location": null,
     "status": "【抵达清关地】Package arrived at Import gateway"
   },
-  "changed_since_previous_fetch": false
+  "changed_since_previous_fetch": true
 }
