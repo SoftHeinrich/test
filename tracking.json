@@ -3,14 +3,19 @@
   "reference_number": "5512723456",
   "destination": "DE",
   "piece_count": 5,
-  "current_status": "On the Way, Delivery instructions have been provided by the receiver./Karlsruhe-Grotzingen, Germany",
-  "latest_time": "2026-10-02 10:20:00",
+  "current_status": "签收Delivered, DELIVERED/KARLSRUHE, DE",
+  "latest_time": "2026-10-02 13:15:00",
   "latest_event": {
-    "date_time": "2026-10-02 10:20:00",
-    "location": "Karlsruhe-Grotzingen, Germany",
-    "status": "On the Way, Delivery instructions have been provided by the receiver."
+    "date_time": "2026-10-02 13:15:00",
+    "location": "KARLSRUHE, DE",
+    "status": "Delivered, DELIVERED"
   },
   "events": [
+    {
+      "date_time": "2026-10-02 13:15:00",
+      "location": "KARLSRUHE, DE",
+      "status": "Delivered, DELIVERED"
+    },
     {
       "date_time": "2026-10-02 10:20:00",
       "location": "Karlsruhe-Grotzingen, Germany",
@@ -34,12 +39,12 @@
     {
       "date_time": "2026-10-01 21:34:00",
       "location": "Frankfurt, Germany",
-      "status": "Departed from Facility"
+      "status": "On the Way, Departed from Facility"
     },
     {
       "date_time": "2026-10-01 21:34:00",
       "location": "Frankfurt, Germany",
-      "status": "On the Way, Departed from Facility"
+      "status": "Departed from Facility"
     },
     {
       "date_time": "2026-10-01 18:40:00",
@@ -119,11 +124,11 @@
   ],
   "source": "San See Express / 三色国际物流",
   "source_url": "http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511",
-  "fetched_at_utc": "2026-10-02T14:10:42+00:00",
+  "fetched_at_utc": "2026-10-02T23:19:10+00:00",
   "previous_latest_event": {
-    "date_time": "2026-10-01 18:40:00",
-    "location": "Frankfurt, Germany",
-    "status": "We have your Package, Arrived at Facility"
+    "date_time": "2026-10-02 10:20:00",
+    "location": "Karlsruhe-Grotzingen, Germany",
+    "status": "On the Way, Delivery instructions have been provided by the receiver."
   },
   "changed_since_previous_fetch": true
 }
