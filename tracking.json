@@ -124,11 +124,11 @@
   ],
   "source": "San See Express / 三色国际物流",
   "source_url": "http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511",
-  "fetched_at_utc": "2026-10-02T23:19:10+00:00",
+  "fetched_at_utc": "2026-10-03T12:46:29+00:00",
   "previous_latest_event": {
-    "date_time": "2026-10-02 10:20:00",
-    "location": "Karlsruhe-Grotzingen, Germany",
-    "status": "On the Way, Delivery instructions have been provided by the receiver."
+    "date_time": "2026-10-02 13:15:00",
+    "location": "KARLSRUHE, DE",
+    "status": "Delivered, DELIVERED"
   },
-  "changed_since_previous_fetch": true
+  "changed_since_previous_fetch": false
 }
