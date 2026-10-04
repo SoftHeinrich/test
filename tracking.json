@@ -52,6 +52,16 @@
       "status": "We have your Package, Arrived at Facility"
     },
     {
+      "date_time": "2026-09-30 16:49:04",
+      "location": null,
+      "status": "【清关完成】Import customs release"
+    },
+    {
+      "date_time": "2026-09-30 11:48:56",
+      "location": null,
+      "status": "【货物清关】Import customs clearance in progress"
+    },
+    {
       "date_time": "2026-09-28 11:13:13",
       "location": null,
       "status": "【抵达清关地】Package arrived at Import gateway"
@@ -124,7 +134,7 @@
   ],
   "source": "San See Express / 三色国际物流",
   "source_url": "http://8.134.51.61:8082/trackIndex.htm?documentCode=1Z2EB7356826735511",
-  "fetched_at_utc": "2026-10-03T22:28:04+00:00",
+  "fetched_at_utc": "2026-10-04T13:29:55+00:00",
   "previous_latest_event": {
     "date_time": "2026-10-02 13:15:00",
     "location": "KARLSRUHE, DE",
